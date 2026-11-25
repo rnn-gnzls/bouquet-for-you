@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f5f0">
+  <title>A little bouquet for you</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body data-friend="{{ friend or '' }}">
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <main class="page">
+    <section id="homeView" class="home-view" {% if friend %}hidden{% endif %}>
+      <p class="eyebrow">a little something, just for you</p>
+      <h1>a bouquet<br><em>for you</em></h1>
+      <p class="intro">two little gardens, made with love<br>choose your name to find yours</p>
+      <div class="friend-buttons">
+        <button class="friend-card dion-card" data-friend="dion">
+          <span class="card-flower">✿</span><span class="card-name">dion</span>
+          <span class="card-caption">a garden in soft colors</span>
+        </button>
+        <button class="friend-card eunice-card" data-friend="eunice">
+          <span class="card-flower">❀</span><span class="card-name">eunice</span>
+          <span class="card-caption">a little piece of blue</span>
+        </button>
+      </div>
+      <p class="footer-note">made of flowers, little thoughts, and morse code ♡</p>
+    </section>
+
+    <section id="bouquetView" class="bouquet-view" {% if not friend %}hidden{% endif %}>
+      <button id="backButton" class="back-button">back to the garden</button>
+      <p class="eyebrow" id="topEyebrow">a small gift for you</p>
+      <div class="bouquet-stage" id="bouquetStage">
+        <div class="sparkles" aria-hidden="true">
+          <span>✦</span><span>✧</span><span>✦</span><span>✧</span><span>⋆</span><span>✦</span>
+        </div>
+        <div class="butterfly butterfly-one" aria-hidden="true">🦋</div>
+        <div class="butterfly butterfly-two" aria-hidden="true">🦋</div>
+        <svg class="bouquet-art" id="bouquetArt" viewBox="0 0 440 430" role="img" aria-label="An illustrated bouquet of flowers">
+          <defs>
+            <linearGradient id="wrapGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#dce8d8"/><stop offset="1" stop-color="#a9c2a9"/>
+            </linearGradient>
+            <linearGradient id="blueWrap" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#e0eff5"/><stop offset="1" stop-color="#a9c9dc"/>
+            </linearGradient>
+          </defs>
+          <g class="stems" fill="none" stroke="#789879" stroke-width="5" stroke-linecap="round">
+            <path d="M218 310 Q185 220 125 116"/><path d="M220 310 Q210 205 215 86"/>
+            <path d="M222 310 Q260 205 315 125"/><path d="M218 310 Q155 240 75 190"/>
+            <path d="M222 310 Q285 240 365 190"/><path d="M220 310 Q205 220 165 165"/>
+            <path d="M220 310 Q245 225 275 165"/>
+          </g>
+          <g class="leaves" fill="#83a889">
+            <path d="M174 250 Q115 210 112 245 Q139 273 174 250Z"/><path d="M255 252 Q315 205 321 239 Q295 271 255 252Z"/>
+            <path d="M190 225 Q130 180 137 213 Q162 240 190 225Z"/><path d="M246 218 Q290 167 299 199 Q280 229 246 218Z"/>
+            <path d="M205 275 Q154 260 160 290 Q185 303 205 275Z"/><path d="M240 278 Q286 250 291 280 Q267 303 240 278Z"/>
+          </g>
+          <g class="flower-heads" id="flowerHeads">
+            <!-- Tulip-style heads; recolored by the selected bouquet theme. -->
+            <g class="flower flower-a" transform="translate(125 112)">
+              <path class="petal" d="M0 25 C-34 9 -28 -27 -13 -30 C-3 -31 0 -13 0 -13 C4 -37 22 -37 27 -23 C37 2 17 19 0 25Z"/>
+              <path class="petal" d="M-3 23 C-13 -7 -5 -34 3 -35 C15 -34 16 -3 5 23Z"/>
+            </g>
+            <g class="flower flower-b" transform="translate(215 80)">
+              <path class="petal" d="M0 25 C-34 9 -28 -27 -13 -30 C-3 -31 0 -13 0 -13 C4 -37 22 -37 27 -23 C37 2 17 19 0 25Z"/>
+              <path class="petal" d="M-3 23 C-13 -7 -5 -34 3 -35 C15 -34 16 -3 5 23Z"/>
+            </g>
+            <g class="flower flower-c" transform="translate(315 120)">
+              <path class="petal" d="M0 25 C-34 9 -28 -27 -13 -30 C-3 -31 0 -13 0 -13 C4 -37 22 -37 27 -23 C37 2 17 19 0 25Z"/>
+              <path class="petal" d="M-3 23 C-13 -7 -5 -34 3 -35 C15 -34 16 -3 5 23Z"/>
+            </g>
+            <g class="flower flower-d" transform="translate(75 185)">
+              <path class="petal" d="M0 25 C-34 9 -28 -27 -13 -30 C-3 -31 0 -13 0 -13 C4 -37 22 -37 27 -23 C37 2 17 19 0 25Z"/>
+              <path class="petal" d="M-3 23 C-13 -7 -5 -34 3 -35 C15 -34 16 -3 5 23Z"/>
+            </g>
+            <g class="flower flower-e" transform="translate(365 185)">
+              <path class="petal" d="M0 25 C-34 9 -28 -27 -13 -30 C-3 -31 0 -13 0 -13 C4 -37 22 -37 27 -23 C37 2 17 19 0 25Z"/>
+              <path class="petal" d="M-3 23 C-13 -7 -5 -34 3 -35 C15 -34 16 -3 5 23Z"/>
+            </g>
+          </g>
+          <g class="lily-sprigs" id="lilySprigs" fill="none" stroke="#7197ad" stroke-width="3" stroke-linecap="round">
+            <path d="M160 275 Q140 225 145 178 M145 205 q-24 -10 -19 -24 q18 -4 19 24 M150 232 q20 -14 25 -1 q-6 17 -25 1"/>
+            <path d="M280 280 Q300 230 292 180 M294 215 q23 -10 22 -25 q-18 -5 -22 25 M290 245 q-20 -14 -25 -1 q6 17 25 1"/>
+          </g>
+          <g class="wrapper" id="wrapperShape">
+            <path d="M130 270 Q220 310 310 270 L270 405 Q220 425 170 405Z" fill="url(#wrapGrad)" stroke="#9bb79e" stroke-width="2"/>
+            <path d="M130 270 Q220 340 310 270 L220 330Z" fill="#ffffff" opacity=".22"/>
+            <path d="M220 330 L220 412" stroke="#ffffff" stroke-width="2" opacity=".5"/>
+            <path d="M190 325 Q220 350 250 325 Q245 370 220 365 Q195 370 190 325Z" fill="#8eae91"/>
+          </g>
+        </svg>
+      </div>
+      <div class="bouquet-copy">
+        <p class="eyebrow" id="dedicationEyebrow">gathered just for you</p>
+        <h2 id="dedicationTitle">for you,</h2>
+        <p class="quote" id="dedicationQuote"></p>
+        <button id="hiddenMessageButton" class="message-button">✉ show hidden message</button>
+      </div>
+      <section id="letter" class="letter" aria-live="polite" hidden>
+        <div class="letter-top"><span>✿ a little letter</span><button id="closeLetter" aria-label="Close letter">×</button></div>
+        <p class="letter-hint">there is something hidden in these dots and dashes</p>
+        <p id="morseText" class="morse-text"></p>
+        <button id="decodeButton" class="decode-button">decode the message</button>
+        <p id="decodedText" class="decoded-text" aria-live="polite"></p>
+      </section>
+      <button id="logoutButton" class="quiet-logout">leave this little garden</button>
+    </section>
+  </main>
+
+  <div id="passwordDialog" class="password-dialog" hidden>
+    <div class="password-card">
+      <button id="closePassword" class="dialog-close" aria-label="Close">×</button>
+      <span class="dialog-flower">✿</span>
+      <p class="eyebrow">a little gatekeeper</p>
+      <h2 id="passwordTitle">this is for you</h2>
+      <p>enter the password i sent you</p>
+      <form id="passwordForm">
+        <input id="passwordInput" type="password" autocomplete="current-password" placeholder="your little secret..." required>
+        <button type="submit">open my bouquet ♡</button>
+      </form>
+      <p id="passwordError" class="error-message" role="alert"></p>
+    </div>
+  </div>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
