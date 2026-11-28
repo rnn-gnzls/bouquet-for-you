@@ -1,5 +1,4 @@
 import os
-from functools import wraps
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -11,15 +10,52 @@ PASSWORD_HASHES = {
     "eunice": generate_password_hash(os.environ.get("EUNICE_PASSWORD", "1212-2005")),
 }
 
-def bouquet_required(friend):
-    def decorator(fn):
-        @wraps(fn)
-        def wrapper(*args, **kwargs):
-            if session.get("friend") != friend:
-                return redirect(url_for("home"))
-            return fn(*args, **kwargs)
-        return wrapper
-    return decorator
+# Fill these in. Songs go in static/songs/
+CONTENT = {
+    "dion": {
+        "name": "dion",
+        "quote": "replace me with the quote that reminds you of dion",
+        "message": "replace me with dion's hidden message",
+        "song": "/static/songs/dion.mp3",
+    },
+    "eunice": {
+        "name": "eunice",
+        "quote": "replace me with the quote that reminds you of eunice",
+        "message": "replace me with eunice's hidden message",
+        "song": "/static/songs/eunice.mp3",
+    },
+}
+
+MORSE = {
+    "a": ".-", "b": "-...", "c": "-.-.", "d": "-..", "e": ".", "f": "..-.", "g": "--.", "h": "....",
+    "i": "..", "j": ".---", "k": "-.-", "l": ".-..", "m": "--", "n": "-.", "o": "---", "p": ".--.",
+    "q": "--.-", "r": ".-.", "s": "...", "t": "-", "u": "..-", "v": "...-", "w": ".--", "x": "-..-",
+    "y": "-.--", "z": "--..", "0": "-----", "1": ".----", "2": "..---", "3": "...--", "4": "....-",
+    "5": ".....", "6": "-....", "7": "--...", "8": "---..", "9": "----.",
+    ".": ".-.-.-", ",": "--..--", "?": "..--..", "!": "-.-.--", "'": ".----.",
+}
+
+def to_morse(text):
+    words = []
+    for word in text.lower().split():
+        letters = [MORSE[c] for c in word if c in MORSE]
+        if letters:
+            words.append(" ".join(letters))
+    return " / ".join(words)
+
+def payload(friend):
+    c = CONTENT[friend]
+    return {"ok": True, "friend": friend, "name": c["name"], "quote": c["quote"],
+            "song": c["song"], "morse": to_morse(c["message"])}
+
+def bouquet_required(fn):
+    from functools import wraps
+    @wraps(fn)
+    def wrapper(*args, **kwargs):
+        if session.get("friend") not in PASSWORD_HASHES:
+            return jsonify(ok=False), 401
+        return fn(*args, **kwargs)
+    return wrapper
 
 @app.get("/")
 def home():
@@ -35,13 +71,18 @@ def login():
         return jsonify(ok=False, message="That password doesn't match. Try again. 🌷"), 401
     session.clear()
     session["friend"] = friend
-    return jsonify(ok=True, redirect=url_for("bouquet", friend=friend))
+    return jsonify({**payload(friend), "redirect": url_for("bouquet", friend=friend)})
 
 @app.get("/bouquet/<friend>")
 def bouquet(friend):
     if friend not in PASSWORD_HASHES or session.get("friend") != friend:
         return redirect(url_for("home"))
     return render_template("index.html", friend=friend)
+
+@app.get("/api/bouquet")
+@bouquet_required
+def api_bouquet():
+    return jsonify(payload(session["friend"]))
 
 @app.post("/logout")
 def logout():
